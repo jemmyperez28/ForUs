@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0oss4o1mxsog"]
+[gd_scene load_steps=6 format=3 uid="uid://b0oss4o1mxsog"]
 
 [ext_resource type="Script" path="res://Scripts/level_1.gd" id="1_ny7pf"]
 [ext_resource type="PackedScene" uid="uid://bksjrj7hes8sr" path="res://Escenas/Player1.tscn" id="2_tvtsa"]
 [ext_resource type="PackedScene" uid="uid://bd8las8h015ea" path="res://Escenas/Player2.tscn" id="3_lwudt"]
+[ext_resource type="PackedScene" uid="uid://cspotaxs3tijl" path="res://Escenas/Player3.tscn" id="4_7oiuk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gi8cb"]
 size = Vector2(1735, 90)
@@ -15,6 +16,8 @@ position = Vector2(338, 332)
 
 [node name="Player2" parent="." instance=ExtResource("3_lwudt")]
 position = Vector2(836, 219)
+
+[node name="Player3" parent="." instance=ExtResource("4_7oiuk")]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 

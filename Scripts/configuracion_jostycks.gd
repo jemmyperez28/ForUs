@@ -2,9 +2,9 @@ extends Node
 
 # Diccionarios para almacenar las acciones configuradas de los jugadores
 var player_controls = {
-	1: {"up": null, "down": null, "left": null, "right": null, "action": null, "jump": null, "choose_skill": null, "use_skill": null},
-	2: {"up": null, "down": null, "left": null, "right": null, "action": null, "jump": null, "choose_skill": null, "use_skill": null},
-	3: {"up": null, "down": null, "left": null, "right": null, "action": null, "jump": null, "choose_skill": null, "use_skill": null}
+	1: {"input_type": "keyboard", "keyboard": {}, "joystick": {}},
+	2: {"input_type": "joystick", "keyboard": {}, "joystick": {}},
+	3: {"input_type": "keyboard", "keyboard": {}, "joystick": {}}
 }
 
 # Lista de acciones que se van a configurar
@@ -12,16 +12,17 @@ var actions = ["up", "down", "left", "right", "action", "jump", "choose_skill", 
 
 var current_player = 1  # Empezamos con el Player 1
 var current_action_index = 0  # Índice de la acción actual a configurar
-
-# Indica si estamos esperando que el jugador presione un botón o tecla
-var waiting_for_input = false
-
-# Controla si se está esperando que el jugador suelte la tecla o botón
-var input_locked = false
+var waiting_for_input = false  # Indica si estamos esperando la entrada de una tecla/botón
+var input_locked = false  # Controla si se está esperando que el jugador suelte la tecla o botón
+var is_joystick_config = false  # Indica si estamos configurando joystick o teclado
 
 # Función que se llama cuando la escena está lista
 func _ready():
 	show_next_action()
+	# Imprimir los joysticks conectados
+	var connected_joypads = Input.get_connected_joypads()
+	var joypad_count = len(connected_joypads)
+	$Label2.text = "Joysticks conectados: " + str(joypad_count)
 
 # Muestra el texto de la próxima acción a configurar
 func show_next_action():
@@ -46,26 +47,29 @@ func show_next_action():
 func _input(event):
 	if waiting_for_input and not input_locked:
 		if event is InputEventKey and event.is_pressed():
-			# Se detecta una tecla del teclado solo si es la primera vez que se presiona
-			var key = event.keycode  # Cambiado de scancode a keycode para Godot 4
+			# Configurando controles de teclado
+			var key = event.keycode
 			var action_name = actions[current_action_index]
-			player_controls[current_player][action_name] = key
+			player_controls[current_player]["keyboard"][action_name] = key  # Guarda en la parte de teclado
+			player_controls[current_player]["input_type"] = "keyboard"  # El jugador usa teclado
 			print("Tecla asignada para Player ", current_player, " en ", action_name, ": ", key)
 			current_action_index += 1
 			input_locked = true  # Bloquea nuevas entradas hasta que la tecla se suelte
 			show_next_action()
-		
+
 		elif event is InputEventJoypadButton and event.is_pressed():
-			# Se detecta un botón del joystick solo si es la primera vez que se presiona
+			# Configurando controles de joystick
 			var joy_button = event.button_index
+			var joy_device_id = event.device  # ID del joystick
+			print("Asignando a Player", current_player, "con Joystick ID:", joy_device_id)
+
 			var action_name = actions[current_action_index]
-			player_controls[current_player][action_name] = joy_button
-			print("Botón de joystick asignado para Player ", current_player, " en ", action_name, ": ", joy_button)
+			player_controls[current_player]["joystick"][action_name] = {"button": joy_button, "device": joy_device_id}  # Guarda en joystick
+			player_controls[current_player]["input_type"] = "joystick"  # El jugador usa joystick
 			current_action_index += 1
 			input_locked = true  # Bloquea nuevas entradas hasta que se suelte el botón
 			show_next_action()
 
-	# Detecta cuando se suelta una tecla o un botón y desbloquea la entrada
 	if event is InputEventKey and not event.is_pressed():
 		input_locked = false
 
@@ -79,7 +83,6 @@ func save_player_controls():
 
 	if file:
 		var json_data = JSON.stringify(player_controls)  # Convierte el diccionario a formato JSON
-
 		file.store_string(json_data)  # Almacena el contenido JSON en el archivo
 		var absolute_path = file.get_path_absolute()  # Obtiene la ruta completa donde se guarda el archivo
 		file.close()

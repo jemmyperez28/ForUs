@@ -8,10 +8,7 @@ func _ready():
 	# Asignar controles a cada jugador
 	$Player1.set_controls(player_controls["1"])
 	$Player2.set_controls(player_controls["2"])
-	#$Player3.set_controls(player_controls[3])
-	# Imprimir los joysticks conectados
-	var connected_joypads = Input.get_connected_joypads()
-	print("Joysticks conectados: ", connected_joypads)
+	$Player3.set_controls(player_controls["3"])
 
 # Función para cargar las configuraciones de los jugadores desde el archivo JSON
 func load_player_controls():
