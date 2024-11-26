@@ -1,17 +1,122 @@
-[gd_scene load_steps=4 format=3 uid="uid://bksjrj7hes8sr"]
+[gd_scene load_steps=10 format=3 uid="uid://bksjrj7hes8sr"]
 
 [ext_resource type="Script" path="res://Scripts/player_1.gd" id="1_072ld"]
-[ext_resource type="Texture2D" uid="uid://eeedha2tlg3y" path="res://icon.svg" id="1_plrit"]
+[ext_resource type="Texture2D" uid="uid://b0pcggcoy4ooe" path="res://Assets/Players/Player1_sprite.png" id="2_bnm1l"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3dmoy"]
-size = Vector2(125, 125)
+[sub_resource type="Animation" id="Animation_1yyji"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_0qmwq"]
+resource_name = "idle"
+length = 0.183335
+loop_mode = 1
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667, 0.0333333, 0.05, 0.0666667, 0.0833333, 0.1, 0.116667, 0.133333, 0.15, 0.166667, 0.183333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(0, 2), Vector2i(0, 3), Vector2i(0, 4), Vector2i(0, 5), Vector2i(0, 6), Vector2i(0, 7), Vector2i(0, 8), Vector2i(0, 9), Vector2i(0, 10), Vector2i(0, 11), Vector2i(0, 12)]
+}
+
+[sub_resource type="Animation" id="Animation_k03c1"]
+resource_name = "jump_down"
+length = 0.12
+loop_mode = 1
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667, 0.0333334, 0.0500001, 0.0666668, 0.0833335, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 26), Vector2i(0, 27), Vector2i(0, 28), Vector2i(0, 29), Vector2i(0, 30), Vector2i(0, 31), Vector2i(0, 32)]
+}
+
+[sub_resource type="Animation" id="Animation_mya2b"]
+resource_name = "jump_up"
+length = 0.08
+loop_mode = 1
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667, 0.0333334, 0.0500001),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 21), Vector2i(0, 22), Vector2i(0, 23), Vector2i(0, 24)]
+}
+
+[sub_resource type="Animation" id="Animation_01nqf"]
+resource_name = "run"
+length = 0.133335
+loop_mode = 1
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667, 0.0333333, 0.05, 0.0666667, 0.0833333, 0.1, 0.116667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 13), Vector2i(0, 14), Vector2i(0, 15), Vector2i(0, 16), Vector2i(0, 17), Vector2i(0, 18), Vector2i(0, 19), Vector2i(0, 20)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k61q6"]
+_data = {
+"RESET": SubResource("Animation_1yyji"),
+"idle": SubResource("Animation_0qmwq"),
+"jump_down": SubResource("Animation_k03c1"),
+"jump_up": SubResource("Animation_mya2b"),
+"run": SubResource("Animation_01nqf")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qv5gj"]
+size = Vector2(14, 26)
 
 [node name="Player1" type="CharacterBody2D"]
+position = Vector2(10, 0)
 script = ExtResource("1_072ld")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_plrit")
+texture = ExtResource("2_bnm1l")
+vframes = 105
+frame = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, 0.5)
-shape = SubResource("RectangleShape2D_3dmoy")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_k61q6")
+}
+speed_scale = 0.25
+
+[node name="DefaultBox" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 10)
+shape = SubResource("RectangleShape2D_qv5gj")

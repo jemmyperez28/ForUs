@@ -1,17 +1,116 @@
-[gd_scene load_steps=4 format=3 uid="uid://cspotaxs3tijl"]
+[gd_scene load_steps=10 format=3 uid="uid://cspotaxs3tijl"]
 
-[ext_resource type="Texture2D" uid="uid://eeedha2tlg3y" path="res://icon.svg" id="1_cs4eq"]
 [ext_resource type="Script" path="res://Scripts/player_3.gd" id="1_ws3rq"]
+[ext_resource type="Texture2D" uid="uid://cbc35hu50wb71" path="res://Assets/Players/Player3_sprite.png" id="2_47p7o"]
+
+[sub_resource type="Animation" id="Animation_mafoi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+
+[sub_resource type="Animation" id="Animation_7g728"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_dprn1"]
+resource_name = "jump_down"
+length = 0.0166683
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [7]
+}
+
+[sub_resource type="Animation" id="Animation_vlush"]
+resource_name = "jump_up"
+length = 0.0166683
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+
+[sub_resource type="Animation" id="Animation_jvifq"]
+resource_name = "run"
+length = 0.116668
+loop_mode = 1
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667, 0.0333333, 0.05, 0.0666667, 0.0833333, 0.1, 0.116667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5ngu7"]
+_data = {
+"RESET": SubResource("Animation_mafoi"),
+"idle": SubResource("Animation_7g728"),
+"jump_down": SubResource("Animation_dprn1"),
+"jump_up": SubResource("Animation_vlush"),
+"run": SubResource("Animation_jvifq")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_upfx7"]
-size = Vector2(124, 123)
+size = Vector2(12, 25)
 
 [node name="Player3" type="CharacterBody2D"]
 script = ExtResource("1_ws3rq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_cs4eq")
+texture = ExtResource("2_47p7o")
+vframes = 65
+frame = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_5ngu7")
+}
+speed_scale = 0.2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, -0.5)
+position = Vector2(1, 4.5)
 shape = SubResource("RectangleShape2D_upfx7")
